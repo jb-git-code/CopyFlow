@@ -40,35 +40,35 @@ Everything stays **on your device**. Nothing is uploaded anywhere.
 Android intentionally blocks apps from reading the clipboard unless they're currently in focus (since Android 10), to prevent silent clipboard-snooping by malicious apps. copyflow works around this the same way real-world open-source clipboard managers do:
 
 ```
-┌─────────────────────────┐
-│  AccessibilityService   │  Watches for taps / text-selection
-│  (native, Kotlin)       │  events across the whole system
+┌──────────────────────────┐
+│   AccessibilityService   │  Watches for taps / text-selection
+│   (native, Kotlin)       │  events across the whole system
 └────────────┬─────────────┘
              │ triggers
              ▼
-┌─────────────────────────┐
-│  Invisible Overlay       │  Briefly grabs system focus using
-│  Window (native)         │  a 1x1px transparent window
+┌──────────────────────────┐
+│    Invisible Overlay     │  Briefly grabs system focus using
+│    Window (native)       │  a 1x1px transparent window
 └────────────┬─────────────┘
              │ reads
              ▼
-┌─────────────────────────┐
-│  ClipboardManager        │  Reads the actual clipboard content
-│  (Android system API)    │  while focus is held
+┌──────────────────────────┐
+│   ClipboardManager       │  Reads the actual clipboard content
+│   (Android system API)   │  while focus is held
 └────────────┬─────────────┘
              │ streams via EventChannel
              ▼
-┌─────────────────────────┐
-│  Flutter UI               │  Displays live clipboard history
-└─────────────────────────┘
+┌──────────────────────────┐
+│        Flutter UI        │  Displays live clipboard history
+└──────────────────────────┘
 ```
 
 This requires two permissions, both explained in detail in-app before you grant them:
 
-| Permission | Why it's needed |
-|---|---|
-| **Accessibility Service** | Detects when a copy action likely occurred, anywhere on the device |
-| **Display over other apps** | Lets the app briefly gain focus to legally read clipboard content |
+|         Permission          |                          Why it's needed                           |
+|-----------------------------|--------------------------------------------------------------------|
+|  **Accessibility Service**  | Detects when a copy action likely occurred, anywhere on the device |
+| **Display over other apps** | Lets the app briefly gain focus to legally read clipboard content  |
 
 See [`PRIVACY.md`](./PRIVACY.md) for exactly what data this touches and where it goes (spoiler: nowhere but your device).
 
